@@ -24,15 +24,18 @@ def iterate():
     glLoadIdentity()
 
 
-def triangle(r, g, b):
-    glBegin(GL_TRIANGLES)
-    glColor3f(r, g, b)
-    glVertex2f(-100.0, -100.0)
-    glColor3f(r, g, b)
-    glVertex2f(100.0, -100.0)
-    glColor3f(r, g, b)
-    glVertex2f(0.0, 100.0)
-    glEnd()
+def draw_cone(
+    color, position=(0, -1, 0), radius=100, height=200, slices=5000, stacks=1000
+):
+    '''Desenha um cone utilizinado o método glutSolidCone do glut como base'''
+    glPushMatrix()
+    try:
+        glColor(color)
+        glTranslatef(*position)
+        glRotatef(250, 1, 0, 0)
+        glutSolidCone(radius, height, slices, stacks)
+    finally:
+        glPopMatrix()
 
 
 def display():
@@ -41,23 +44,23 @@ def display():
     glLoadIdentity()
     iterate()
     eixoXY()
-    triangle(1.0, 0.0, 0.0)
+    draw_cone(color=(1.0, 0.0, 0.0))
     # escala (50%) e translação (150x, 100y)
     glTranslated(150.0, 100.0, 0.0)
     glScaled(0.5, 0.5, 0)
-    triangle(0.0, 1.0, 0.0)
+    draw_cone(color=(0.0, 1.0, 0.0))
 
     glLoadIdentity()
     # inverte o triângulo com escala negativa no eixo y
     glScaled(1.0, -1.0, 1.0)
-    triangle(0.0, 0.0, 1.0)
+    draw_cone(color=(0.0, 0.0, 1.0))
 
     glLoadIdentity()
     # rotação dem 30º, translação(-150x, 100y) e escala (50%)
     glTranslated(-150.0, 100.0, 0.0)
     glScaled(0.5, 0.5, 0)
     glRotated(30, 0, 0, 1.0)
-    triangle(0.5, 0.5, 1.0)
+    draw_cone(color=(0.5, 0.5, 1.0))
 
     glutSwapBuffers()
 

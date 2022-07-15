@@ -25,15 +25,18 @@ def iterate():
     glLoadIdentity()
 
 
-def triangle(r, g, b):
-    glBegin(GL_TRIANGLES)
-    glColor3f(r, g, b)
-    glVertex2f(-100.0, -100.0)
-    glColor3f(r, g, b)
-    glVertex2f(100.0, -100.0)
-    glColor3f(r, g, b)
-    glVertex2f(0.0, 100.0)
-    glEnd()
+def draw_cone(
+    color, position=(0, -1, 0), radius=100, height=200, slices=5000, stacks=1000
+):
+    '''Desenha um cone utilizinado o método glutSolidCone do glut como base'''
+    glPushMatrix()
+    try:
+        glColor(color)
+        glTranslatef(*position)
+        glRotatef(250, 1, 0, 0)
+        glutSolidCone(radius, height, slices, stacks)
+    finally:
+        glPopMatrix()
 
 
 def display():
@@ -42,7 +45,7 @@ def display():
     glLoadIdentity()
     iterate()
     eixoXY()
-    triangle(1.0, 0.0, 0.0)
+    draw_cone(color=(0.8, 0.1, 0.2, 0.5))
     glLoadIdentity()
     # rotação dem 30º, translação(-150x, 100y) e escala (50%)
     matrix = np.array(
@@ -66,7 +69,7 @@ def display():
         ]
     )
     glLoadMatrixf(matrix)
-    triangle(0.0, 0.0, 1.0)
+    draw_cone(color=(0.2, 0.2, 0.8, 0.5))
 
     glutSwapBuffers()
 
